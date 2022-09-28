@@ -19,6 +19,7 @@ public class MapCreator : MonoBehaviour
     public int height;
     public Vector2 cellSize;
     public int[,] mapArray;
+    public RectTransform[,] mapArrayList;
     float screenHeightPixelValue = 828f;//toplamda 828 pixel'lik bir boþluk býrakacak ekranýn altýndan
     float buttonSizeMult = 3.73f;
     //cellSize.x / 3.73f = button width
@@ -34,11 +35,8 @@ public class MapCreator : MonoBehaviour
  
     private void Start()
     {
-        width = size;
-        height = size;
-        cellSize = CalculateCellSize();
-        CreateMap(width, height);
-        
+        mapArray = new int[0, 0];
+        mapArrayList = new RectTransform[0, 0];
     }
     
     private Vector2 CalculateCellSize()
@@ -48,9 +46,16 @@ public class MapCreator : MonoBehaviour
         return new Vector2(w, h);
     }
 
-    public void CreateMap(int width, int height)
+    public void CreateMap(int size)
     {
+        ClearMap();
+
+        this.size = size;
+        width = size;
+        height = size;
+        cellSize = CalculateCellSize();
         mapArray = new int[width, height];
+        mapArrayList = new RectTransform[width, height];
 
         DrawMap();
     }
@@ -61,7 +66,7 @@ public class MapCreator : MonoBehaviour
         {
             for (int y = 0; y < mapArray.GetLength(1); y++)
             {
-                CreateMapPart(GetScreenPosition(x, y), CalculateButtonSize());
+                CreateMapPart(GetScreenPosition(x, y), CalculateButtonSize(), x, y);
 
                 Debug.DrawLine(GetScreenPosition(x, y), GetScreenPosition(x, y + 1), Color.white, 100f);
                 Debug.DrawLine(GetScreenPosition(x, y), GetScreenPosition(x + 1, y), Color.white, 100f);
@@ -88,7 +93,7 @@ public class MapCreator : MonoBehaviour
         return new Vector2(cellSize.x / buttonSizeMult, cellSize.y / buttonSizeMult);
     }
 
-    private void CreateMapPart(Vector3 worldPos, Vector2 size)
+    private void CreateMapPart(Vector3 worldPos, Vector2 size, int x, int y)
     {
         Vector2 anchoredPos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(gameInPanel, worldPos, cam, out anchoredPos);
@@ -97,10 +102,23 @@ public class MapCreator : MonoBehaviour
         mapButtonPart.parent = gameInPanel.transform;
         mapButtonPart.localPosition = new Vector3(anchoredPos.x, anchoredPos.y, 0f);
         mapButtonPart.localScale = Vector3.one;
-
+        
         RectTransform mapButton = mapButtonPart.transform.GetChild(0).GetComponent<RectTransform>();
         mapButton.sizeDelta = size;
         mapButton.anchoredPosition = new Vector3(size.x * .5f, size.y * .5f, 0f);
+        mapArrayList[x, y] = mapButton;
+    }
 
+    private void ClearMap()
+    {
+        for (int x = 0; x < mapArrayList.GetLength(0); x++)
+        {
+            for (int y = 0; y < mapArrayList.GetLength(1); y++)
+            {
+                Debug.Log(mapArrayList[x, y].parent.gameObject.name);
+                Destroy(mapArrayList[x, y].parent.gameObject);
+                Debug.Log(mapArrayList[x, y].parent.gameObject.name);
+            }
+        }
     }
 }

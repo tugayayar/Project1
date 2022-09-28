@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4807850596864308781}
   m_Layer: 0
-  m_Name: MapPartPivot
+  m_Name: OldMapPartPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
