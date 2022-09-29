@@ -19,7 +19,7 @@ public class MapCreator : MonoBehaviour
     public int height;
     public Vector2 cellSize;
     public int[,] mapArray;
-    public RectTransform[,] mapArrayList;
+    public MapPartButtonInfo[,] mapArrayList;
     float screenHeightPixelValue = 828f;//toplamda 828 pixel'lik bir boþluk býrakacak ekranýn altýndan
     float buttonSizeMult = 3.73f;
     //cellSize.x / 3.73f = button width
@@ -36,7 +36,7 @@ public class MapCreator : MonoBehaviour
     private void Start()
     {
         mapArray = new int[0, 0];
-        mapArrayList = new RectTransform[0, 0];
+        mapArrayList = new MapPartButtonInfo[0, 0];
     }
     
     private Vector2 CalculateCellSize()
@@ -55,7 +55,7 @@ public class MapCreator : MonoBehaviour
         height = size;
         cellSize = CalculateCellSize();
         mapArray = new int[width, height];
-        mapArrayList = new RectTransform[width, height];
+        mapArrayList = new MapPartButtonInfo[width, height];
 
         DrawMap();
     }
@@ -98,15 +98,23 @@ public class MapCreator : MonoBehaviour
         Vector2 anchoredPos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(gameInPanel, worldPos, cam, out anchoredPos);
 
+        //Button Pivot Position
         RectTransform mapButtonPart = Instantiate(mapPart, Vector3.zero, Quaternion.identity);
         mapButtonPart.parent = gameInPanel.transform;
         mapButtonPart.localPosition = new Vector3(anchoredPos.x, anchoredPos.y, 0f);
         mapButtonPart.localScale = Vector3.one;
         
+        //Button LocalScale and Local Position
         RectTransform mapButton = mapButtonPart.transform.GetChild(0).GetComponent<RectTransform>();
         mapButton.sizeDelta = size;
         mapButton.anchoredPosition = new Vector3(size.x * .5f, size.y * .5f, 0f);
-        mapArrayList[x, y] = mapButton;
+
+        //Button Information and mapArrayList Assignment
+        MapPartButtonInfo mapPartInfoScript = mapButton.GetComponent<MapPartButtonInfo>();
+        mapArrayList[x, y] = mapPartInfoScript;
+        mapPartInfoScript.xRowInMapIndex = x;
+        mapPartInfoScript.yColumnInMapIndex = y;
+        mapPartInfoScript.text.text = x.ToString() + ", " + y.ToString();
     }
 
     private void ClearMap()
@@ -115,9 +123,9 @@ public class MapCreator : MonoBehaviour
         {
             for (int y = 0; y < mapArrayList.GetLength(1); y++)
             {
-                Debug.Log(mapArrayList[x, y].parent.gameObject.name);
-                Destroy(mapArrayList[x, y].parent.gameObject);
-                Debug.Log(mapArrayList[x, y].parent.gameObject.name);
+                Debug.Log(mapArrayList[x, y].transform.parent.gameObject.name);
+                Destroy(mapArrayList[x, y].transform.parent.gameObject);
+                Debug.Log(mapArrayList[x, y].transform.parent.gameObject.name);
             }
         }
     }

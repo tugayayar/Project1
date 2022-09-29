@@ -6,6 +6,15 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    #region Singleton
+    public static UIManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+    #endregion
+
     [Header("Menu Panel Variables")]
     [SerializeField] TMP_InputField sizeIF;
     [SerializeField] Button rebuildButton;
@@ -19,5 +28,14 @@ public class UIManager : MonoBehaviour
     public void RebuildButtonClick()
     {
         MapCreator.Instance.CreateMap(GetMapSize());
+        GameManager.Instance.matchedCheckIndexList.Clear();
+        GameManager.Instance.matchedSeries.Clear();
+        GameManager.Instance.matchedCount = 0;
+        UpdateMatchCountText(GameManager.Instance.matchedCount);
+    }
+
+    public void UpdateMatchCountText(int count)
+    {
+        matchCountText.text = "Match Count: " + count.ToString();
     }
 }
