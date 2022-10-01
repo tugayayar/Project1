@@ -121,9 +121,10 @@ public class MapPartButtonInfo : MonoBehaviour
 
         if (gameManagerSC.matchedCheckIndexList.Count >= 3)
         {
+            gameManagerSC.matchedSeries.Clear();
             for (int i = 0; i < gameManagerSC.matchedCheckIndexList.Count; i++)
             {
-                for (int j = 0; (i != j) && j < gameManagerSC.matchedCheckIndexList.Count; j++)
+                for (int j = 0; /*(i != j) && */j < gameManagerSC.matchedCheckIndexList.Count; j++)
                 {
                     //if (i != j)
                     //{
@@ -157,35 +158,55 @@ public class MapPartButtonInfo : MonoBehaviour
 
                     //}
                 }
+                List<int> emptyList = new List<int>();
+                gameManagerSC.matchedSeries.Add(emptyList);
             }
         }
 
-        if (gameManagerSC.matchedSeries.Count >= 3)
-        {
-            //ReverseList(gameManagerSC.matchedSeries);//gameManagerSC.matchedSeries.Reverse(); //büyükten küçüðe sýralamak için //null referans hatasýna sebeb olan satýr burasý!!!
+        //if (gameManagerSC.matchedSeries.Count >= 3)
+        //{
+            ////ReverseList(gameManagerSC.matchedSeries);//gameManagerSC.matchedSeries.Reverse(); //büyükten küçüðe sýralamak için //null referans hatasýna sebeb olan satýr burasý!!!
                                                      //3-4-2-1-0 þeklinde sýralama yapýyor. RemoveAt ile birlikte 3 silindikten sonra 4 silinmeye çalýþýlýyor ve hata veriyor
-
-            for (int i = 0; i < gameManagerSC.matchedSeries.Count; i++)
-            {
-                //Debug.Log("sayý: " + gameManagerSC.matchedSeries[i]);
-                MapCreator.Instance.mapArrayList[gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][0], gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][1]].ClearButton();
-                //gameManagerSC.matchedCheckIndexList.RemoveAt(gameManagerSC.matchedSeries[i]);
-            }
 
             //for (int i = 0; i < gameManagerSC.matchedSeries.Count; i++)
             //{
-            //    Debug.Log("Silinecek Indis: " + gameManagerSC.matchedSeries[i] + "\n Indis Ýçeriði: " + gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][0] + " , " + gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][1]);
-            //    gameManagerSC.matchedCheckIndexList.RemoveAt(gameManagerSC.matchedSeries[i]);
-            //    gameManagerSC.matchedCheckIndexList.TrimExcess();
+                ////Debug.Log("sayý: " + gameManagerSC.matchedSeries[i]);
+                //mapList[gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][0], gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][1]].ClearButton();
+                ////gameManagerSC.matchedCheckIndexList.RemoveAt(gameManagerSC.matchedSeries[i]);
             //}
 
-            ClearMatchedCheckListAndFillAgain(gameManagerSC, mapList);
+            ////for (int i = 0; i < gameManagerSC.matchedSeries.Count; i++)
+            ////{
+            ////    Debug.Log("Silinecek Indis: " + gameManagerSC.matchedSeries[i] + "\n Indis Ýçeriði: " + gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][0] + " , " + gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][1]);
+            ////    gameManagerSC.matchedCheckIndexList.RemoveAt(gameManagerSC.matchedSeries[i]);
+            ////    gameManagerSC.matchedCheckIndexList.TrimExcess();
+            ////}
 
-            gameManagerSC.matchedCount++;
-            UIManager.Instance.UpdateMatchCountText(gameManagerSC.matchedCount);
+            //ClearMatchedCheckListAndFillAgain(gameManagerSC, mapList);
 
-            gameManagerSC.matchedSeries.Clear();
+            //gameManagerSC.matchedCount++;
+            //UIManager.Instance.UpdateMatchCountText(gameManagerSC.matchedCount);
+
+            //gameManagerSC.matchedSeries.Clear();
+        //}
+
+        for (int i = 0; i < gameManagerSC.matchedSeries.Count; i++)
+        {
+            if (gameManagerSC.matchedSeries[i].Count >= 3)
+            {
+                for (int j = 0; j < gameManagerSC.matchedSeries[i].Count; j++)
+                {
+                    mapList[gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i][j]][0], gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i][j]][1]].ClearButton();
+                }
+
+                gameManagerSC.matchedCount++;
+                UIManager.Instance.UpdateMatchCountText(gameManagerSC.matchedCount);
+            }
         }
+
+        gameManagerSC.matchedSeries.Clear();
+
+        ClearMatchedCheckListAndFillAgain(gameManagerSC, mapList);
     }
 
     void ClearMatchedCheckListAndFillAgain(GameManager gmSC, MapPartButtonInfo[,] array)

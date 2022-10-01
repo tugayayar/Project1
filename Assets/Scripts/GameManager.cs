@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     public int matchedCount;
     public List<List<int>> matchedCheckIndexList = new List<List<int>>();
-    public List<int> matchedSeries = new List<int>();
+    public List<List<int>> matchedSeries = new List<List<int>>();//public List<int> matchedSeries = new List<int>();
 
     public void FillMatchedCheckIndexList(int x, int y)
     {
@@ -23,18 +23,48 @@ public class GameManager : MonoBehaviour
         data.Add(x);
         data.Add(y);
 
-        if (matchedCheckIndexList.Count == 0) matchedCheckIndexList.Add(data);
+        ListFiller(matchedCheckIndexList, data);
+
+        //if (matchedCheckIndexList.Count == 0) matchedCheckIndexList.Add(data);
+        //else
+        //{
+        //    int arrayCounter = 0;
+
+        //    for (int i = 0; i < matchedCheckIndexList.Count; i++)
+        //    {
+        //        int xCounter = 0;
+        //        int yCounter = 0;
+
+        //        if (xCounter == 0 && matchedCheckIndexList[i][0] == x) xCounter++;
+        //        if (yCounter == 0 && matchedCheckIndexList[i][1] == y) yCounter++;
+
+        //        if (xCounter > 0 && yCounter > 0) //Bu index listede varmýþ!
+        //        {
+        //            arrayCounter++;
+        //            break;
+        //        }
+        //    }
+
+        //    if (arrayCounter == 0) matchedCheckIndexList.Add(data); //listede olmayan index eklendi
+        //}
+
+        //Debug.Log(matchedCheckIndexList.Count);
+    }
+
+    private void ListFiller(List<List<int>> list, List<int> addData)
+    {
+        if (list.Count == 0) list.Add(addData);
         else
         {
             int arrayCounter = 0;
 
-            for (int i = 0; i < matchedCheckIndexList.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 int xCounter = 0;
                 int yCounter = 0;
 
-                if (xCounter == 0 && matchedCheckIndexList[i][0] == x) xCounter++;
-                if (yCounter == 0 && matchedCheckIndexList[i][1] == y) yCounter++;
+                if (xCounter == 0 && list[i][0] == addData[0]) xCounter++;
+                if (yCounter == 0 && list[i][1] == addData[1]) yCounter++;
 
                 if (xCounter > 0 && yCounter > 0) //Bu index listede varmýþ!
                 {
@@ -43,15 +73,19 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            if (arrayCounter == 0) matchedCheckIndexList.Add(data); //listede olmayan index eklendi
+            if (arrayCounter == 0) matchedCheckIndexList.Add(addData); //listede olmayan index eklendi
         }
-
-        //Debug.Log(matchedCheckIndexList.Count);
     }
 
     public void FillMatchedSeriesList(int index)
     {
-        if (!matchedSeries.Contains(index)) matchedSeries.Add(index);
+        //if (!matchedSeries.Contains(index)) matchedSeries.Add(index);
+
+        List<int> indexData = new List<int>();
+        indexData.Add(index);
+
+        if (matchedSeries.Count == 0) matchedSeries.Add(indexData);
+        else if (!matchedSeries[matchedSeries.Count - 1].Contains(index)) { matchedSeries[matchedSeries.Count - 1].Add(index); Debug.Log(matchedSeries.Count - 1 + ". indisde " + matchedSeries[matchedSeries.Count - 1].Count + " tane eleman var!"); };
     }
 
     //public void CheckIsPlayerMatched()
