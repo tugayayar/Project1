@@ -15,9 +15,11 @@ public class MapCreator : MonoBehaviour
 
     [Header("Map Variables")]
     private int size = 3;
-    public int width;
-    public int height;
-    public Vector2 cellSize;
+    [SerializeField] private int minSize = 2;
+    [SerializeField] private int maxSize = 10;
+    private int width;
+    private int height;
+    private Vector2 cellSize;
     public int[,] mapArray;
     public MapPartButtonInfo[,] mapArrayList;
     float screenHeightPixelValue = 828f;//toplamda 828 pixel'lik bir boþluk býrakacak ekranýn altýndan
@@ -46,13 +48,20 @@ public class MapCreator : MonoBehaviour
         return new Vector2(w, h);
     }
 
+    private void SizeAdjuster(int size)
+    {
+        if (size < minSize) this.size = minSize;
+        else if (size > maxSize) this.size = maxSize;
+        else this.size = size;
+    }
+
     public void CreateMap(int size)
     {
         ClearMap();
 
-        this.size = size;
-        width = size;
-        height = size;
+        SizeAdjuster(size);
+        width = this.size;
+        height = this.size;
         cellSize = CalculateCellSize();
         mapArray = new int[width, height];
         mapArrayList = new MapPartButtonInfo[width, height];
