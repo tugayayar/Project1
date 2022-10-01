@@ -100,6 +100,8 @@ public class MapPartButtonInfo : MonoBehaviour
             }
         }
 
+        int matchCounter = 0;
+
         for (int i = 0; i < gameManagerSC.matchedSeries.Count; i++)
         {
             if (gameManagerSC.matchedSeries[i].Count >= 3)
@@ -109,9 +111,14 @@ public class MapPartButtonInfo : MonoBehaviour
                     mapList[gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i][j]][0], gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i][j]][1]].ClearButton();
                 }
 
-                gameManagerSC.matchedCount++;
-                UIManager.Instance.UpdateMatchCountText(gameManagerSC.matchedCount);
+                matchCounter++;
             }
+        }
+
+        if (matchCounter > 0)
+        {
+            gameManagerSC.matchedCount++;
+            UIManager.Instance.UpdateMatchCountText(gameManagerSC.matchedCount);
         }
 
         gameManagerSC.matchedSeries.Clear();

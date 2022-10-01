@@ -107,7 +107,7 @@ public class MapCreator : MonoBehaviour
         mapArrayList[x, y] = mapPartInfoScript;
         mapPartInfoScript.xRowInMapIndex = x;
         mapPartInfoScript.yColumnInMapIndex = y;
-        mapPartInfoScript.text.text = x.ToString() + ", " + y.ToString();
+        //mapPartInfoScript.text.text = x.ToString() + ", " + y.ToString();
     }
 
     private void ClearMap()
