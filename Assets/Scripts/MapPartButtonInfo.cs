@@ -127,33 +127,33 @@ public class MapPartButtonInfo : MonoBehaviour
                 {
                     if (i != j)
                     {
-                        for (int k = 0; k < 1; k++)//eðer iþaretli bir komþusu varsa kontrol etmeye devam etmesin diye!
-                        {
+                        //for (int k = 0; k < 1; k++)//eðer iþaretli bir komþusu varsa kontrol etmeye devam etmesin diye!
+                        //{
                             if (IsRightNeighbor(maxRow, gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[i][1], gameManagerSC.matchedCheckIndexList[j][0], gameManagerSC.matchedCheckIndexList[j][1])) 
                             { 
                                 gameManagerSC.FillMatchedSeriesList(i);
                                 gameManagerSC.FillMatchedSeriesList(j);
-                                break; 
+                                //break; 
                             }
                             if (IsLeftNeighbor(gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[i][1], gameManagerSC.matchedCheckIndexList[j][0], gameManagerSC.matchedCheckIndexList[j][1]))
                             {
                                 gameManagerSC.FillMatchedSeriesList(i);
                                 gameManagerSC.FillMatchedSeriesList(j);
-                                break;
+                                //break;
                             }
                             if (IsUpNeighbor(maxColumn, gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[i][1], gameManagerSC.matchedCheckIndexList[j][0], gameManagerSC.matchedCheckIndexList[j][1]))
                             {
                                 gameManagerSC.FillMatchedSeriesList(i);
                                 gameManagerSC.FillMatchedSeriesList(j);
-                                break;
+                                //break;
                             }
                             if (IsDownNeighbor(gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[i][1], gameManagerSC.matchedCheckIndexList[j][0], gameManagerSC.matchedCheckIndexList[j][1]))
                             {
                                 gameManagerSC.FillMatchedSeriesList(i);
                                 gameManagerSC.FillMatchedSeriesList(j);
-                                break;
+                                //break;
                             }
-                        }
+                        //}
 
                     }
                 }
@@ -162,7 +162,8 @@ public class MapPartButtonInfo : MonoBehaviour
 
         if (gameManagerSC.matchedSeries.Count >= 3)
         {
-            gameManagerSC.matchedSeries.Reverse(); //büyükten küçüðe sýralamak için
+            //ReverseList(gameManagerSC.matchedSeries);//gameManagerSC.matchedSeries.Reverse(); //büyükten küçüðe sýralamak için //null referans hatasýna sebeb olan satýr burasý!!!
+                                                     //3-4-2-1-0 þeklinde sýralama yapýyor. RemoveAt ile birlikte 3 silindikten sonra 4 silinmeye çalýþýlýyor ve hata veriyor
 
             for (int i = 0; i < gameManagerSC.matchedSeries.Count; i++)
             {
@@ -171,12 +172,14 @@ public class MapPartButtonInfo : MonoBehaviour
                 //gameManagerSC.matchedCheckIndexList.RemoveAt(gameManagerSC.matchedSeries[i]);
             }
 
-            for (int i = 0; i < gameManagerSC.matchedSeries.Count; i++)
-            {
-                Debug.Log("Silinecek Indis: " + gameManagerSC.matchedSeries[i] + "\n Indis Ýçeriði: " + gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][0] + " , " + gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][1]);
-                gameManagerSC.matchedCheckIndexList.RemoveAt(gameManagerSC.matchedSeries[i]);
-                gameManagerSC.matchedCheckIndexList.TrimExcess();
-            }
+            //for (int i = 0; i < gameManagerSC.matchedSeries.Count; i++)
+            //{
+            //    Debug.Log("Silinecek Indis: " + gameManagerSC.matchedSeries[i] + "\n Indis Ýçeriði: " + gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][0] + " , " + gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][1]);
+            //    gameManagerSC.matchedCheckIndexList.RemoveAt(gameManagerSC.matchedSeries[i]);
+            //    gameManagerSC.matchedCheckIndexList.TrimExcess();
+            //}
+
+            ClearMatchedCheckListAndFillAgain(gameManagerSC, mapList);
 
             gameManagerSC.matchedCount++;
             UIManager.Instance.UpdateMatchCountText(gameManagerSC.matchedCount);
@@ -184,6 +187,33 @@ public class MapPartButtonInfo : MonoBehaviour
             gameManagerSC.matchedSeries.Clear();
         }
     }
+
+    void ClearMatchedCheckListAndFillAgain(GameManager gmSC, MapPartButtonInfo[,] array)
+    {
+        gmSC.matchedCheckIndexList.Clear();
+
+        for (int x = 0; x < array.GetLength(0); x++)
+            for (int y = 0; y < array.GetLength(1); y++)
+                if (array[x, y].isPlayerChecked) gmSC.FillMatchedCheckIndexList(x, y);
+    }
+
+    //void ReverseList(List<int> list) //Bu metod .Reverse() "3-4-2-1-0" þeklinde sýralama yaptýðý için yazýldý!
+    //{
+    //    int temp = 0;
+
+    //    for (int i = 0; i <= list.Count - 1; i++)
+    //    {
+    //        for (int j = i + 1; j < list.Count; j++)
+    //        {
+    //            if (list[i] < list[j])
+    //            {
+    //                temp = list[i];
+    //                list[i] = list[j];
+    //                list[j] = temp;
+    //            }
+    //        }
+    //    }
+    //}
 
     private void ButtonImageChanger()
     {
