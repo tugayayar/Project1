@@ -113,13 +113,7 @@ public class MapCreator : MonoBehaviour
     private void ClearMap()
     {
         for (int x = 0; x < mapArrayList.GetLength(0); x++)
-        {
             for (int y = 0; y < mapArrayList.GetLength(1); y++)
-            {
-                Debug.Log(mapArrayList[x, y].transform.parent.gameObject.name);
                 Destroy(mapArrayList[x, y].transform.parent.gameObject);
-                Debug.Log(mapArrayList[x, y].transform.parent.gameObject.name);
-            }
-        }
     }
 }
