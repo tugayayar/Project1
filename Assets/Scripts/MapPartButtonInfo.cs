@@ -123,10 +123,10 @@ public class MapPartButtonInfo : MonoBehaviour
         {
             for (int i = 0; i < gameManagerSC.matchedCheckIndexList.Count; i++)
             {
-                for (int j = 0; j < gameManagerSC.matchedCheckIndexList.Count; j++)
+                for (int j = 0; (i != j) && j < gameManagerSC.matchedCheckIndexList.Count; j++)
                 {
-                    if (i != j)
-                    {
+                    //if (i != j)
+                    //{
                         //for (int k = 0; k < 1; k++)//eðer iþaretli bir komþusu varsa kontrol etmeye devam etmesin diye!
                         //{
                             if (IsRightNeighbor(maxRow, gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[i][1], gameManagerSC.matchedCheckIndexList[j][0], gameManagerSC.matchedCheckIndexList[j][1])) 
@@ -155,7 +155,7 @@ public class MapPartButtonInfo : MonoBehaviour
                             }
                         //}
 
-                    }
+                    //}
                 }
             }
         }
@@ -168,7 +168,7 @@ public class MapPartButtonInfo : MonoBehaviour
             for (int i = 0; i < gameManagerSC.matchedSeries.Count; i++)
             {
                 //Debug.Log("sayý: " + gameManagerSC.matchedSeries[i]);
-                MapCreator.Instance.mapArrayList[gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[i][1]].ClearButton();
+                MapCreator.Instance.mapArrayList[gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][0], gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][1]].ClearButton();
                 //gameManagerSC.matchedCheckIndexList.RemoveAt(gameManagerSC.matchedSeries[i]);
             }
 
