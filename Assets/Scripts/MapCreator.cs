@@ -68,24 +68,17 @@ public class MapCreator : MonoBehaviour
             {
                 CreateMapPart(GetScreenPosition(x, y), CalculateButtonSize(), x, y);
 
-                Debug.DrawLine(GetScreenPosition(x, y), GetScreenPosition(x, y + 1), Color.white, 100f);
-                Debug.DrawLine(GetScreenPosition(x, y), GetScreenPosition(x + 1, y), Color.white, 100f);
+                //Debug.DrawLine(GetScreenPosition(x, y), GetScreenPosition(x, y + 1), Color.white, 100f);
+                //Debug.DrawLine(GetScreenPosition(x, y), GetScreenPosition(x + 1, y), Color.white, 100f);
             }
         }
-        Debug.DrawLine(GetScreenPosition(0, height), GetScreenPosition(width, height), Color.white, 100f);
-        Debug.DrawLine(GetScreenPosition(width, 0), GetScreenPosition(width, height), Color.white, 100f);
+        //Debug.DrawLine(GetScreenPosition(0, height), GetScreenPosition(width, height), Color.white, 100f);
+        //Debug.DrawLine(GetScreenPosition(width, 0), GetScreenPosition(width, height), Color.white, 100f);
     }
 
     public Vector2 GetScreenPosition(int x, int y)
     {
         return (new Vector2(x, y) * cellSize) + new Vector2(0f, screenHeightPixelValue);
-    }
-
-    public void GetCellPosition(Vector2 screenPos, out int x, out int y)
-    {
-        x = Mathf.FloorToInt(screenPos.x / cellSize.x);
-        y = Mathf.FloorToInt(screenPos.y / cellSize.y);
-        Debug.Log(x + ", " + y + " - " + mapArray[x, y].ToString());
     }
 
     private Vector2 CalculateButtonSize()

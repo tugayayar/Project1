@@ -90,27 +90,27 @@ public class MapPartButtonInfo : MonoBehaviour
     //    return false;
     //}
     
-    private bool IsRightNeighbor(int maxIndex, int currentX, int nextX)
+    private bool IsRightNeighbor(int maxIndex, int currentX, int currentY, int nextX, int nextY)
     {
-        if (currentX + 1 < maxIndex && currentX + 1 == nextX) return true;
+        if (currentY == nextY && currentX + 1 < maxIndex && currentX + 1 == nextX) return true;
         return false;
     }
 
-    private bool IsLeftNeighbor(int currentX, int nextX)
+    private bool IsLeftNeighbor(int currentX, int currentY, int nextX, int nextY)
     {
-        if (currentX - 1 >= 0 && currentX - 1 == nextX) return true;
+        if (currentY == nextY && currentX - 1 >= 0 && currentX - 1 == nextX) return true;
         return false;
     }
 
-    private bool IsUpNeighbor(int maxIndex, int currentY, int nextY)
+    private bool IsUpNeighbor(int maxIndex, int currentX, int currentY, int nextX, int nextY)
     {
-        if (currentY + 1 < maxIndex && currentY + 1 == nextY) return true;
+        if (currentX == nextX && currentY + 1 < maxIndex && currentY + 1 == nextY) return true;
         return false;
     }
 
-    private bool IsDownNeighbor(int currentY, int nextY)
+    private bool IsDownNeighbor(int currentX, int currentY, int nextX, int nextY)
     {
-        if (currentY - 1 >= 0 && currentY - 1 == nextY) return true;
+        if (currentX == nextX && currentY - 1 >= 0 && currentY - 1 == nextY) return true;
         return false;
     }
 
@@ -129,25 +129,25 @@ public class MapPartButtonInfo : MonoBehaviour
                     {
                         for (int k = 0; k < 1; k++)//eðer iþaretli bir komþusu varsa kontrol etmeye devam etmesin diye!
                         {
-                            if (IsRightNeighbor(maxRow, gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[j][0])) 
+                            if (IsRightNeighbor(maxRow, gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[i][1], gameManagerSC.matchedCheckIndexList[j][0], gameManagerSC.matchedCheckIndexList[j][1])) 
                             { 
                                 gameManagerSC.FillMatchedSeriesList(i);
                                 gameManagerSC.FillMatchedSeriesList(j);
                                 break; 
                             }
-                            if (IsLeftNeighbor(gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[j][0]))
+                            if (IsLeftNeighbor(gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[i][1], gameManagerSC.matchedCheckIndexList[j][0], gameManagerSC.matchedCheckIndexList[j][1]))
                             {
                                 gameManagerSC.FillMatchedSeriesList(i);
                                 gameManagerSC.FillMatchedSeriesList(j);
                                 break;
                             }
-                            if (IsUpNeighbor(maxColumn, gameManagerSC.matchedCheckIndexList[i][1], gameManagerSC.matchedCheckIndexList[j][1]))
+                            if (IsUpNeighbor(maxColumn, gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[i][1], gameManagerSC.matchedCheckIndexList[j][0], gameManagerSC.matchedCheckIndexList[j][1]))
                             {
                                 gameManagerSC.FillMatchedSeriesList(i);
                                 gameManagerSC.FillMatchedSeriesList(j);
                                 break;
                             }
-                            if (IsDownNeighbor(gameManagerSC.matchedCheckIndexList[i][1], gameManagerSC.matchedCheckIndexList[j][1]))
+                            if (IsDownNeighbor(gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[i][1], gameManagerSC.matchedCheckIndexList[j][0], gameManagerSC.matchedCheckIndexList[j][1]))
                             {
                                 gameManagerSC.FillMatchedSeriesList(i);
                                 gameManagerSC.FillMatchedSeriesList(j);
@@ -166,9 +166,16 @@ public class MapPartButtonInfo : MonoBehaviour
 
             for (int i = 0; i < gameManagerSC.matchedSeries.Count; i++)
             {
-                Debug.Log("sayý: " + gameManagerSC.matchedSeries[i]);
+                //Debug.Log("sayý: " + gameManagerSC.matchedSeries[i]);
                 MapCreator.Instance.mapArrayList[gameManagerSC.matchedCheckIndexList[i][0], gameManagerSC.matchedCheckIndexList[i][1]].ClearButton();
-                gameManagerSC.matchedCheckIndexList.RemoveAt(i);
+                //gameManagerSC.matchedCheckIndexList.RemoveAt(gameManagerSC.matchedSeries[i]);
+            }
+
+            for (int i = 0; i < gameManagerSC.matchedSeries.Count; i++)
+            {
+                Debug.Log("Silinecek Indis: " + gameManagerSC.matchedSeries[i] + "\n Indis Ýçeriði: " + gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][0] + " , " + gameManagerSC.matchedCheckIndexList[gameManagerSC.matchedSeries[i]][1]);
+                gameManagerSC.matchedCheckIndexList.RemoveAt(gameManagerSC.matchedSeries[i]);
+                gameManagerSC.matchedCheckIndexList.TrimExcess();
             }
 
             gameManagerSC.matchedCount++;

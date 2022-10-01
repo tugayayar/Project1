@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
             if (arrayCounter == 0) matchedCheckIndexList.Add(data); //listede olmayan index eklendi
         }
 
-        Debug.Log(matchedCheckIndexList.Count);
+        //Debug.Log(matchedCheckIndexList.Count);
     }
 
     public void FillMatchedSeriesList(int index)
