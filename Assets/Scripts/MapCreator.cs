@@ -22,7 +22,12 @@ public class MapCreator : MonoBehaviour
     private Vector2 cellSize;
     public int[,] mapArray;
     public MapPartButtonInfo[,] mapArrayList;
-    float screenHeightPixelValue = 828f;//toplamda 828 pixel'lik bir boþluk býrakacak ekranýn altýndan
+
+    [Header("Screen Variables")]
+    [SerializeField] float screenWidthPixelValue = 0f;
+    [SerializeField] float screenHeightPixelValue = 828f;//toplamda 828 pixel'lik bir boþluk býrakacak ekranýn altýndan
+    [SerializeField] float screenWidth = 0;
+    [SerializeField] float screenHeight = 0;
     float buttonSizeMult = 3.73f;
     //cellSize.x / 3.73f = button width
     //cellSize.y / 3.73f = button height
@@ -40,11 +45,34 @@ public class MapCreator : MonoBehaviour
         mapArray = new int[0, 0];
         mapArrayList = new MapPartButtonInfo[0, 0];
     }
+
+    private Vector2 GetScreenSize()
+    {
+        UIManager uimSC = UIManager.Instance;
+        //RectTransform recT = uimSC.screenPointBottomLeftWorldRef.parent.GetComponent<RectTransform>();
+        Vector2 wh = new Vector2();
+
+        wh = GetScreenPos(uimSC.screenPointBottomLeftWorldRef.position);
+        screenHeightPixelValue = wh.y;
+        screenWidthPixelValue = Screen.width - wh.x;
+
+        wh = GetScreenPos(uimSC.screenPointTopRightWorldRef.position);
+        screenWidth = wh.x - (screenWidthPixelValue * 2f);
+        screenHeight = wh.y - screenHeightPixelValue;
+
+        return new Vector2(screenWidth, screenHeight);
+    }
+
+    private Vector2 GetScreenPos(Vector3 worldPos)
+    {
+        Vector3 screenPoint = cam.WorldToScreenPoint(worldPos);
+        return screenPoint;
+    }
     
     private Vector2 CalculateCellSize()
     {
-        float w = Screen.width / size;
-        float h = (Screen.height - screenHeightPixelValue) / size;
+        float w = Screen.width / size; //screenWidth / size; 
+        float h = (Screen.height - screenHeightPixelValue) / size; //screenHeight / size; 
         return new Vector2(w, h);
     }
 
@@ -58,6 +86,8 @@ public class MapCreator : MonoBehaviour
     public void CreateMap(int size)
     {
         ClearMap();
+
+        GetScreenSize();
 
         SizeAdjuster(size);
         width = this.size;
@@ -92,7 +122,7 @@ public class MapCreator : MonoBehaviour
 
     private Vector2 CalculateButtonSize()
     {
-        return new Vector2(cellSize.x / buttonSizeMult, cellSize.y / buttonSizeMult);
+        return new Vector2(Mathf.Abs(cellSize.x / buttonSizeMult),Mathf.Abs(cellSize.y / buttonSizeMult));
     }
 
     private void CreateMapPart(Vector3 worldPos, Vector2 size, int x, int y)

@@ -20,6 +20,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button rebuildButton;
     [SerializeField] TextMeshProUGUI matchCountText;
 
+    [Header("Game In Panel Variables")]
+    public Transform screenPointBottomLeftWorldRef;
+    public Transform screenPointTopRightWorldRef;
+
     private int GetMapSize()
     {
         return int.Parse(sizeIF.text);
